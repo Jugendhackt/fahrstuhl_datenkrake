@@ -35,7 +35,7 @@ model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
 model.add(Dense(16))
 model.add(Activation('relu'))
-model.add(Dense(17, activation='softmax'))
+model.add(Dense(6, activation='softmax'))
 
 model.compile(loss=keras.losses.sparse_categorical_crossentropy,
         optimizer=keras.optimizers.SGD(lr=0.0001,momentum=0.2),
