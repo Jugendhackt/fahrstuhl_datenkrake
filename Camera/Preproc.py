@@ -73,14 +73,14 @@ def splitList(picDict):
         x = 0
         for j in pics:
             if (x % 2) != 0:
-                x_train_list.append(np.reshape(misc.imresize(j, (128,128)), (128,128,1)))
+                x_train_list.append(np.reshape(misc.imresize(j, (96,96)), (96,96,1)))
                 y_train_list.append(stateEncodeDict[i])
             else:
-                x_test_list.append(np.reshape(misc.imresize(j, (128,128)), (128,128,1)))
+                x_test_list.append(np.reshape(misc.imresize(j, (96,96)), (96,96,1)))
                 y_test_list.append(stateEncodeDict[i])
             x += 1
         if x == 1:
-                x_test_list.append(np.reshape(misc.imresize(pics[0], (128,128)), (128,128,1)))
+                x_test_list.append(np.reshape(misc.imresize(pics[0], (96,96)), (96,96,1)))
                 y_test_list.append(stateEncodeDict[i])
         x_test = np.stack(x_test_list)
         x_train = np.stack(x_train_list)
