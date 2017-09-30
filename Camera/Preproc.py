@@ -79,6 +79,9 @@ def splitList(picDict):
                 x_test_list.append(misc.imresize(j, (128,128)))
                 y_test_list.append(stateEncodeDict[i])
             x += 1
+        if x == 1:
+                x_test_list.append(misc.imresize(pics[0], (128,128)))
+                y_test_list.append(stateEncodeDict[i])
         x_test = np.stack(x_test_list)
         x_train = np.stack(x_train_list)
         y_test = np.stack(y_test_list)
@@ -104,7 +107,7 @@ def manualTest(test_list):
             plt.show()
             p = input("Pfeil:")
             s = input("Stock:")
-    
+
             if s == 'X' or p == 'X':
                 break
             if dic[s + "_" + p] == test_list[z+2][i]:
@@ -122,9 +125,9 @@ def testList(test_list):
 """
 
 if __name__ == "__main__":
-    f = fileArray("Pics")
+    f = fileArray("Pictures")
     l = loadPictures(f)
     d = createSortedDict(l)
     s = splitList(d)
-#    manualTest(s)
-showLists(s) 
+    #    manualTest(s)
+    showLists(s)
