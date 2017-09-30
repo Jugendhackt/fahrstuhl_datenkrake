@@ -9,9 +9,9 @@ def genStateDict():
     dic = {}
     inc = 0
     for i in ["0","1","2","3","4","L"]:
-        for j in ["H","L","R"]:
-            dic[i + "_" + j] = inc
-            inc += 1
+        #for j in ["H","L","R"]:
+        dic[i + "_" + 'L'] = inc
+        inc += 1
     return dic
 
 # Array with all files we use

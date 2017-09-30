@@ -5,6 +5,7 @@ from keras.layers import Activation, Dropout, Flatten, Dense
 from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_array, load_img
 import keras
 
+dir_path = os.path.dirname(os.path.realpath(__file__))
 data = getList()
 
 batch_size = 64
@@ -51,3 +52,6 @@ model.fit_generator(
        validation_data=test_generator,
        verbose=2,
        validation_steps=800 // batch_size)
+
+os.chdir("..")
+model.save_weights("weights.hd5")
