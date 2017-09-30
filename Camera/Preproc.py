@@ -73,14 +73,14 @@ def splitList(picDict):
         x = 0
         for j in pics:
             if (x % 2) != 0:
-                x_train_list.append(misc.imresize(j, (128,128)))
+                x_train_list.append(np.reshape(misc.imresize(j, (128,128)), (128,128,1)))
                 y_train_list.append(stateEncodeDict[i])
             else:
-                x_test_list.append(misc.imresize(j, (128,128)))
+                x_test_list.append(np.reshape(misc.imresize(j, (128,128)), (128,128,1)))
                 y_test_list.append(stateEncodeDict[i])
             x += 1
         if x == 1:
-                x_test_list.append(misc.imresize(pics[0], (128,128)))
+                x_test_list.append(np.reshape(misc.imresize(pics[0], (128,128)), (128,128,1)))
                 y_test_list.append(stateEncodeDict[i])
         x_test = np.stack(x_test_list)
         x_train = np.stack(x_train_list)
@@ -124,10 +124,9 @@ def testList(test_list):
             print("Train Test FAIL")
 """
 
-if __name__ == "__main__":
+def getList():
     f = fileArray("Pictures")
     l = loadPictures(f)
     d = createSortedDict(l)
     s = splitList(d)
-    #    manualTest(s)
-    showLists(s)
+    return s
