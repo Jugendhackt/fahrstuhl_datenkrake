@@ -6,34 +6,30 @@ from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_a
 import numpy as np
 import scipy.misc as sm
 import glob
+from TrainArrow import constructModel as ArrowModel
+from TrainLevel import constructModel as LevelModel
+import os
 
-def loadModel(path, grade):
-    model = Sequential()
-    model.add(Conv2D(4, (3, 3), input_shape=(40, 40, 1)))
-    model.add(Activation('relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
+path = os.path.dirname(os.path.realpath(__file__))
 
-    model.add(Conv2D(4, (3, 3)))
-    model.add(Activation('relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-
-    model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
-    model.add(Dense(16))
-    model.add(Activation('relu'))
-    model.add(Dense(grade, activation='softmax'))
-
-    model.compile(loss=keras.losses.sparse_categorical_crossentropy,
-            optimizer=keras.optimizers.SGD(lr=0.0001,momentum=0.2),
-                  metrics=['accuracy'])
-
-    model.load_weights(path)
+def loadModel(model, weights_path):
+    model.load_weights(weights_path)
     return model
 
 def checkPic(model, pic):
-    return(model.predict(np.reshape(pic, (1, 40, 40, 1)), 1, 1))
+    os.chdir(path)
+
+    result = model.predict(np.reshape(pic, (1, 40, 40, 1)), 1, 1)
+    return np.argmax(result)
 
 if __name__=="__main__":
-    m = loadModel("levels.hd5", 6)
+    os.chdir(path)
+    ml = loadModel(LevelModel(), "levels.hd5")
+    ma = loadModel(ArrowModel(), "arrows.hd5")
     for i in glob.glob("Pictures/Pfeile/*.jpg"):
-        print(checkPic(m, sm.imread(i, "L")))
+        print(i)
+        print(checkPic(ma, sm.imread(i, "L")))
+    for i in glob.glob("Pictures/Levels/*.jpg"):
+        print(i)
+        print(checkPic(ml, sm.imread(i, "L")))
 
