@@ -7,7 +7,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../../../favicon.ico">
 
-    <title>Carousel Template for Bootstrap</title>
+    <title>Elevator_madness</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -15,11 +15,15 @@
     <!-- Custom styles for this template -->
     <link href="carousel.css" rel="stylesheet">
     <link href="progress.css" rel="stylesheet">
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
   </head>
   <body>
 
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <a class="navbar-brand" href="#">Jugend hackt</a>
+      <a class="navbar-brand" href="#">Elevator_madness</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -159,6 +163,52 @@
           </div>
       </div><!-- /.row -->
 
+      </br></br>
+      <h4>Fahrstuhl Fahrten:</h4>
+        <div id ="table" >
+
+            <script>
+
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4) {
+                        // Typical action to be performed when the document is ready:
+                        response = JSON.parse(xhttp.responseText);
+
+                        console.log(response);
+
+
+
+                        $(document).ready(function () {
+                            var html = "<table class = 'table' border='1|1'><tbody>";
+                                html+="<thead>";
+                                html+="<tr>";
+                                html+="<th>Etage</th>";
+                                html+="<th>Fahrtrichtung</th>";
+                                html+="<th>Zeitstempel</th>";
+                                html+="</tr>";
+                                html+="</thead>";
+                            for (var i = 0; i < response.length; i++) {
+                                html+="<tr>";
+                                html+="<td>"+response[i].floor+"</td>";
+                                html+="<td>"+response[i].direction+"</td>";
+                                html+="<td>"+response[i].time+"</td>";
+
+                                html+="</tr>";
+
+                            }
+                            html+="</tbody></table>";
+                            $("#table").html(html);
+                        });
+
+                    }
+                };
+                xhttp.open("GET", "http://192.168.9.216:3524/data/get", true);
+                xhttp.send();
+
+
+            </script>
+        </div>
 
       <!-- START THE FEATURETTES -->
 
