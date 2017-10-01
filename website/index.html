@@ -110,28 +110,28 @@
 
                       <div class="row bs-wizard" style="border-bottom:0;">
 
-                          <div class="col-xs-2 bs-wizard-step complete">
+                          <div class="col-xs-2 bs-wizard-step disabled" id="u2">
                             <div class="text-center bs-wizard-stepnum">2. Untergeschoss</div>
                             <div class="progress"><div class="progress-bar"></div></div>
                             <a href="#" class="bs-wizard-dot"></a>
                             <div class="bs-wizard-info text-center"></div>
                           </div>
 
-                          <div class="col-xs-2 bs-wizard-step complete"><!-- complete -->
+                          <div class="col-xs-2 bs-wizard-step disabled" id="u1"><!-- complete -->
                             <div class="text-center bs-wizard-stepnum">1. Untergeschoss</div>
                             <div class="progress"><div class="progress-bar"></div></div>
                             <a href="#" class="bs-wizard-dot"></a>
                             <div class="bs-wizard-info text-center"></div>
                           </div>
 
-                          <div class="col-xs-2 bs-wizard-step active"><!-- complete -->
+                          <div class="col-xs-2 bs-wizard-step disabled" id="eg"><!-- complete -->
                             <div class="text-center bs-wizard-stepnum">Erdgeschoss</div>
                             <div class="progress"><div class="progress-bar"></div></div>
                             <a href="#" class="bs-wizard-dot"></a>
                             <div class="bs-wizard-info text-center"></div>
                           </div>
 
-                          <div class="col-xs-2 bs-wizard-step disabled"><!-- active -->
+                          <div class="col-xs-2 bs-wizard-step disabled" id="o1"><!-- active -->
                             <div class="text-center bs-wizard-stepnum">1. Obergeschoss</div>
                             <div class="progress"><div class="progress-bar"></div></div>
                             <a href="#" class="bs-wizard-dot"></a>
@@ -139,7 +139,7 @@
                           </div>
 
 
-                          <div class="col-xs-2 bs-wizard-step disabled"><!-- complete -->
+                          <div class="col-xs-2 bs-wizard-step disabled" id="o2"><!-- complete -->
                             <div class="text-center bs-wizard-stepnum">2. Obergeschoss</div>
                             <div class="progress"><div class="progress-bar"></div></div>
                             <a href="#" class="bs-wizard-dot"></a>
@@ -147,7 +147,7 @@
                           </div>
 
 
-                          <div class="col-xs-3 bs-wizard-step disabled"><!-- complete -->
+                          <div class="col-xs-2 bs-wizard-step disabled" id="o3"><!-- complete -->
                             <div class="text-center bs-wizard-stepnum">3. Obergeschoss</div>
                             <div class="progress"><div class="progress-bar"></div></div>
                             <a href="#" class="bs-wizard-dot"></a>
@@ -173,11 +173,61 @@
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4) {
                         // Typical action to be performed when the document is ready:
-                        response = JSON.parse(xhttp.responseText);
+                        files = JSON.parse(xhttp.responseText);
 
-                        console.log(response);
+                        function insertionSort(files){
+                            for(var k=1; k < files.length; k++){
+                                for(var i=k; i > 0 && new Date(files[i].time) < new Date(files[i-1].time); i--){
 
+                                    var tmpFile = files[i];
+                                    files[i] = files[i-1];
+                                    files[i-1] = tmpFile;
 
+                                    return files;
+
+                                }
+                            }
+
+                        }
+
+                        var result = insertionSort(files);
+
+                        console.log(result[result.length - 1].floor);
+
+                        if(result[result.length - 1].floor == -2){
+                            document.getElementById("u2") .classList.add('active');
+                        }
+                        if(result[result.length - 1].floor == -1){
+                            document.getElementById("u2").classList.add('complete');
+                            document.getElementById("u1").classList.add('active');
+
+                        }
+                        if(result[result.length - 1].floor == 0){
+                            document.getElementById("u2").classList.add('complete');
+                            document.getElementById("u1").classList.add('complete');
+                            document.getElementById("eg").classList.add('active');
+                        }
+                        if(result[result.length - 1].floor == 1){
+                            document.getElementById("u2").classList.add('complete');
+                            document.getElementById("u1").classList.add('complete');
+                            document.getElementById("eg").classList.add('complete');
+                            document.getElementById("o1").classList.add('active');
+                        }
+                        if(result[result.length - 1].floor == 2){
+                            document.getElementById("u2").classList.add('complete');
+                            document.getElementById("u1").classList.add('complete');
+                            document.getElementById("eg").classList.add('complete');
+                            document.getElementById("o1").classList.add('complete');
+                            document.getElementById("o2").classList.add('active');
+                        }
+                        if(result[result.length - 1].floor == 3){
+                            document.getElementById("u2").classList.add('complete');
+                            document.getElementById("u1").classList.add('complete');
+                            document.getElementById("eg").classList.add('complete');
+                            document.getElementById("o1").classList.add('complete');
+                            document.getElementById("o2").classList.add('complete');
+                            document.getElementById("o3").classList.add('active');
+                        }
 
                         $(document).ready(function () {
                             var html = "<table class = 'table' border='1|1'><tbody>";
@@ -188,11 +238,11 @@
                                 html+="<th>Zeitstempel</th>";
                                 html+="</tr>";
                                 html+="</thead>";
-                            for (var i = 0; i < response.length; i++) {
+                            for (var i = 0; i < result.length; i++) {
                                 html+="<tr>";
-                                html+="<td>"+response[i].floor+"</td>";
-                                html+="<td>"+response[i].direction+"</td>";
-                                html+="<td>"+response[i].time+"</td>";
+                                html+="<td>"+result[i].floor+"</td>";
+                                html+="<td>"+result[i].direction+"</td>";
+                                html+="<td>"+result[i].time+"</td>";
 
                                 html+="</tr>";
 
